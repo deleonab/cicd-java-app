@@ -92,13 +92,5 @@ Get the InitialAdminPassword and log into the Jenkins web interface
 ![check docker installation](./images/sonar-installed2.png)
 Error: Permission denied?
 sudo chmod 777 /var/run/docker.sock
-### docker container start [container id]  as it will need to be started if userdata script fails
-
-### Log into |Sonarqube console
-
-Jenkins ec2 public IP on port 9000
 
 
-
-
-### Create Git Repo
