@@ -94,3 +94,9 @@ Error: Permission denied?
 sudo chmod 777 /var/run/docker.sock
 
 
+# WE HAVE NOW SUCCESFULLY CONFIGURED SONARQUBE AND JENKINS
+# # We shall now write our jenkins file then convert it to a shared library
+## Jenkinsfile
+```
+
+```
