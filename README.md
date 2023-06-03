@@ -94,15 +94,18 @@ Get the InitialAdminPassword and log into the Jenkins web interface
 
 ### We shall be using 2 git repositories
 1. Host our java app, jenkinsfile,dockerfile and deployment manifest files
-https://github.com/deleonab/cicd-java-app.git
 
 2. Host our jenkins shared library
 https://github.com/deleonab/jenkins-shared-library-for-pipeline.git
 
 We shall import the jenkins shared library into our jenkinsfile and pass parameters into our script
 
-jenkins-shared-library-for-pipeline/vars/gitCheckout.groovy
+jenkins-shared-library-for-pipeline/vars/
+The vars directory will contain all the groovy scripts which will be called into our Jenkinsfile
 
+### Repo: jenkins-shared-library-for-pipeline
+### folder: vars
+### file: gitCheckout.groovy
 ```
 def call(Map stageParams) {
  
@@ -114,9 +117,11 @@ def call(Map stageParams) {
   }
 ```
 
-cicd-java-app/Jenkinsfile
+### Repo: cicd-java-app
+### file: Jenkinsfile
 
 ```
+### import the library
 @Library('my-shared-library') _
 
 pipeline{
@@ -128,6 +133,7 @@ pipeline{
         stage('Git Checkout'){
                     when { expression {  params.action == 'create' } }
             steps{
+              ### Call gitcheckout function above
             gitCheckout(
                 branch: "main",
                 url: "https://github.com/deleonab/cicd-java-app.git"
