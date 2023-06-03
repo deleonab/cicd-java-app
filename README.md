@@ -1,15 +1,15 @@
 We shall be building a CI/CD Pipeline to deploy our java application in a Kubernetes cluster. We shall be using Jenkins shared library instead of a simple Jenkinsfile. 
 
-      - We shall host our Jenkins shared Library as well as our application code in Github
-      - Jenkins will checkout the code from Github
-      - Jenkins will do Unit Testing, Integration Testing and Static Code Analysis using Sonarqube
-      - Next it will do a Quality Gate status checks
-      - If it passes, It will proceed with the build otherwise it will be marked as failed.
-     -  The Maven build will produce a*.jar artifact.
-     -  We shall use a Dockerfile to build our docker image
-     -  Next, we shall scan our image for vulnerabilities using Trivy. If pushing to ECS, we can enable image scanning i.e push on scan feature. 
-     -  We shall push our image to dockerhub or ECS.
-     -  The image pushed to the repo will be used in our deployment manifests to deploy into our Kubernetes cluster.
+ - We shall host our Jenkins shared Library as well as our application code in Github
+ - Jenkins will checkout the code from Github
+ - Jenkins will do Unit Testing, Integration Testing and Static Code Analysis using Sonarqube
+ - Next it will do a Quality Gate status checks
+ - If it passes, It will proceed with the build otherwise it will be marked as failed.
+ -  The Maven build will produce a*.jar artifact.
+ -  We shall use a Dockerfile to build our docker image
+ -  Next, we shall scan our image for vulnerabilities using Trivy. If pushing to ECS, we can enable image scanning i.e push on scan feature. 
+ -  We shall push our image to dockerhub or ECS.
+ -  The image pushed to the repo will be used in our deployment manifests to deploy into our Kubernetes cluster.
 
 
 CREATE JENKINS SERVER
