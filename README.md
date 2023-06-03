@@ -1,53 +1,104 @@
-# kubernetes-configmap-reload
+We shall be building a CI/CD Pipeline to deploy our java application in a Kubernetes cluster. We shall be using Jenkins shared library instead of a simple Jenkinsfile. 
 
-Pre-requisites:
---------
-    - Install Git
-    - Install Maven
-    - Install Docker
-    - EKS Cluster
-    
-Clone code from github:
--------
-    git clone https://github.com/vikash-kumar01/spring-cloud-kubernetes.git
-    cd spring-cloud-kubernetes/kubernetes-configmap-reload
-    
-Build Maven Artifact:
--------
-    mvn clean install
+1.        We shall host our Jenkins shared Library as well as our application code in Github
+2.        Jenkins will checkout the code from Github
+3.        Jenkins will do Unit Testing, Integration Testing and Static Code Analysis using Sonarqube
+4.        Next it will do a Quality Gate status checks
+5.        If it passes, It will proceed with the build otherwise it will be marked as failed.
+6.        The Maven build will produce a*.jar artifact.
+7.        We shall use a Dockerfile to build our docker image
+8.        Next, we shall scan our image for vulnerabilities using Trivy. If pushing to ECS, we can enable image scanning i.e push on scan feature. 
+9.        We shall push our image to dockerhub or ECS.
+10. The image pushed to the repo will be used in our deployment manifests to deploy into our Kubernetes cluster.
+
+
+CREATE JENKINS SERVER
+- create VPC with 2 private and 2 public subnets (cicd-project-vpc)  vpc-094dc7f7668457ea8
+-	Use Ubuntu image 22.04
+-	Choose T2 Medium
+-	Create Key Pair   (cicd-keypair)
+-	Security group 
+	Open Port 22 (SSH), 8080(Jenkins) and 9000(SonarQube)
+-	Storage 30GB
  
-Build Docker image for Springboot Application
---------------
-    docker build -t vikashashoke/kubernetes-configmap-reload .
-  
-Docker login
--------------
-    docker login
-    
-Push docker image to dockerhub
------------
-    docker push vikashashoke/kubernetes-configmap-reload
-    
-Deploy Spring Application:
---------
-    kubectl apply -f kubernetes-configmap.yml
-    
-Check Deployments, Pods and Services:
--------
+Userdata
+Install Jenkins, Docker and Sonarqube
+The docker is needed to run sonarqube as a container
+i.e docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+```
 
-    kubectl get deploy
-    kubectl get pods
-    kubectl get svc
-    
-Now Goto Loadbalancer and check whether service comes Inservice or not, If it comes Inservice copy DNS Name of Loadbalancer and Give in WebUI
+#!/bin/bash
 
-    http://a70a89c22e06f49f3ba2b3270e974e29-1311314938.us-west-2.elb.amazonaws.com:8080/home/data
-    
-![2](https://user-images.githubusercontent.com/63221837/82123471-44f5f300-97b7-11ea-9d10-438cf9cc98a0.png)
+sudo apt update -y
 
-Now we can cleanup by using below commands:
---------
-    kubectl delete deploy kubernetes-configmap-reload
-    kubectl delete svc kubernetes-configmap-reload
-# springboot_k8s_application
-# mrdevops_java_app
+sudo apt upgrade -y 
+
+sudo apt install openjdk-17-jre -y
+
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update -y 
+sudo apt-get install jenkins -y
+
+```
+INSTALL DOCKER
+
+```
+#!/bin/bash
+sudo apt update -y
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" -y
+
+sudo apt update -y
+
+apt-cache policy docker-ce -y
+
+sudo apt install docker-ce -y
+
+#sudo systemctl status docker
+### This added to ensure our container runs
+sudo chmod 777 /var/run/docker.sock
+### docker container start [container id]  as it will need to be started if userdata script fails
+```
+
+Launch Sonarqube container
+```
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+```
+
+### Wait for our instance to be up and running.
+
+Go to Jenkins using the Instance public IP on port 8080
+
+Get the InitialAdminPassword and log into the Jenkins web interface
+
+![Jenkins Installed](./images/jenkins-installed.png)
+
+### Check if docker was successfully installed by running
+```
+ docker container ls
+```
+
+![check docker installation](./images/sonar-installed.png)
+
+- Sonarqube container is running
+![check docker installation](./images/sonar-installed2.png)
+Error: Permission denied?
+sudo chmod 777 /var/run/docker.sock
+### docker container start [container id]  as it will need to be started if userdata script fails
+
+### Log into |Sonarqube console
+
+Jenkins ec2 public IP on port 9000
+
+
+
+
+### Create Git Repo
