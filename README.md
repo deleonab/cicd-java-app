@@ -90,13 +90,61 @@ Get the InitialAdminPassword and log into the Jenkins web interface
 
 - Sonarqube container is running
 ![check docker installation](./images/sonar-installed2.png)
-Error: Permission denied?
-sudo chmod 777 /var/run/docker.sock
 
 
-# WE HAVE NOW SUCCESFULLY CONFIGURED SONARQUBE AND JENKINS
-# # We shall now write our jenkins file then convert it to a shared library
-## Jenkinsfile
+### We shall be using 2 git repositories
+1. Host our java app, jenkinsfile,dockerfile and deployment manifest files
+https://github.com/deleonab/cicd-java-app.git
+
+2. Host our jenkins shared library
+https://github.com/deleonab/jenkins-shared-library-for-pipeline.git
+
+We shall import the jenkins shared library into our jenkinsfile and pass parameters into our script
+
+jenkins-shared-library-for-pipeline/vars/gitCheckout.groovy
+
+```
+def call(Map stageParams) {
+ 
+    checkout([
+        $class: 'GitSCM',
+        branches: [[name:  stageParams.branch ]],
+        userRemoteConfigs: [[ url: stageParams.url ]]
+    ])
+  }
 ```
 
+cicd-java-app/Jenkinsfile
+
 ```
+@Library('my-shared-library') _
+
+pipeline{
+
+    agent any
+
+    stages{
+         
+        stage('Git Checkout'){
+                    when { expression {  params.action == 'create' } }
+            steps{
+            gitCheckout(
+                branch: "main",
+                url: "https://github.com/deleonab/cicd-java-app.git"
+            )
+            }
+        }
+    }
+``
+Get the url for our git jenkins shared library
+```
+https://github.com/deleonab/jenkins-shared-library-for-pipeline.git
+```
+Go to Jenkins
+Dashboard > Manage Jenjins > System Configuration > System
+
+Search for the 'Global Pipeline Libraries' section
+
+Name: my-shared-library
+Default Version: main
+Project Repository: https://github.com/deleonab/jenkins-shared-library-for-pipeline.git
