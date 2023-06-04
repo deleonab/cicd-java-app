@@ -25,7 +25,7 @@ stages{
             }
         }
 
-        ```
+        
         stage('Integration Test maven'){
          
             steps{
