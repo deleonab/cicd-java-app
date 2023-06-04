@@ -540,6 +540,10 @@ I ran a build without this and it remained in a pending and paused state for alm
 
 ![QG paused](./images/qualitygate-paused.png)
 
+Let's go to Sonarqube to configure the webhook
 
+Administration > Configuration > webhooks
+
+![sonar webhook](./images/sonar-webhook.png)
 
 ![quality gate passed](./images/qualitygate-passed.png)
