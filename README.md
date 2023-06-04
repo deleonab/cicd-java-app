@@ -528,11 +528,11 @@ stage('Quality Gate Status Check : Sonarqube'){
             }
         }
        
-       
+```      
 
-```
 Build Now
-```
+
+
 
 This stage will remain in a pending stage as it requires a webhook from sonarqube
 
