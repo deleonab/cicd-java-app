@@ -713,6 +713,16 @@ Now that our image has been built and scanned, we need to push the image to our 
 
 We need to do a docker clean up after push as we wouldn't need the image anymore
 
+Let's go to out Jenkins job > pipeline syntax
+
+![docker push](./images/docker-credentials.png)
+
+
+
+![docker push](./images/docker-credentials2.png)
+
+
+
 Repo: jenkins-shared-library-for-pipeline
 folder: vars
 file: dockerImagePush.groovy
