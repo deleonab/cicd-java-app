@@ -757,6 +757,14 @@ file: Jenkinsfile
         } 
 
 ```
+Let's run our build again
+
+
+![docker success](./images/docker-push-success.png)
+
+![docker success](./images/docker-push-success2.png)
+
+![docker success](./images/docker-push-success3.png)
 
 
 
