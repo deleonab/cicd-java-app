@@ -698,3 +698,62 @@ stage('Docker Image Scan: trivy '){
 ```
 
 Let's run the Pipeline build
+
+![trivy scan](./images/trivy-success.png)
+
+Trivy scan completed successfully
+
+274 vulnerabilities found
+
+![trivy result](./images/trivy-count.png)
+
+
+
+Now that our image has been built and scanned, we need to push the image to our image repository (docker hub)
+
+We need to do a docker clean up after push as we wouldn't need the image anymore
+
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: dockerImagePush.groovy
+
+```
+ def call(String projectImage, String ImageTag, String hubUser){
+     withCredentials([usernamePassword(
+            credentialsId: "docker",
+            usernameVariable: "USER",
+            passwordVariable: "PASS"
+    )]) {
+        sh "docker login -u '$USER' -p '$PASS'"
+    }
+    sh "docker image push ${hubUser}/${projectImage}:${ImageTag}"
+    sh "docker image push ${hubUser}/${projectImage}:latest"   
+ }
+
+```
+
+Repo: cicd-java-app
+file: Jenkinsfile
+
+```
+ stage('Docker Image Push : DockerHub '){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   dockerImagePush("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
+               }
+            }
+        } 
+
+```
+
+
+
+
+
+
+
+
+
+
