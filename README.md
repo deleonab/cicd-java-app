@@ -529,3 +529,17 @@ stage('Quality Gate Status Check : Sonarqube'){
         }
        
        ```
+
+```
+Build Now
+```
+
+This stage will remain in a pending stage as it requires a webhook from sonarqube
+
+I ran a build without this and it remained in a pending and paused state for almost 17 minutes until I aborted the build
+
+![QG paused](./images/qualitygate-paused.png)
+
+
+
+![quality gate passed](./images/qualitygate-passed.png)
