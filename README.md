@@ -304,3 +304,52 @@ stage('Integration Test maven'){
             }
         }
 
+The current Jenkinsfile is as below:
+
+```
+@Library('my-shared-library') _
+pipeline{
+
+    agent any
+stages{
+       stage('Git Checkout'){
+                    
+            steps{
+            gitCheckout(
+                branch: "main",
+                url: "https://github.com/deleonab/cicd-java-app.git"
+            )
+            }
+        }
+
+        stage('Unit Test maven'){
+         
+         
+            steps{
+               script{
+                   
+                   mvnTest()
+               }
+            }
+        }
+
+        
+        stage('Integration Test maven'){
+         
+            steps{
+               script{
+                   
+                   mvnIntegrationTest()
+               }
+            }
+        }
+
+}
+}
+
+```
+
+Let's build stages 1- 3 (checkout,unit test, integration test)
+
+![integration test](./images/integration-successful.png)
+
