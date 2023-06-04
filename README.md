@@ -282,12 +282,16 @@ Result: Success
 
 The next stage is to do the Maven Integration Testing
 
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+
 ```
 def call(){
     sh 'mvn test'
 }
 ```
-
+Repo: cicd-java-app
+file: Jenkinsfile
 
 ```
 stage('Integration Test maven'){
@@ -299,3 +303,4 @@ stage('Integration Test maven'){
                }
             }
         }
+
