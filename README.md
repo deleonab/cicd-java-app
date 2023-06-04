@@ -639,6 +639,15 @@ parameters{
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
         string(name: 'ImageName', description: "name of the docker build", defaultValue: 'javaapp')
         string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')
-        string(name: 'AppName', description: "name of the Application", defaultValue: 'springboot')
+        string(name: 'DockerHubUser', description: "name of the Application", defaultValue: 'springboot')
     }
 ```
+
+Let's run the pipeline build with the docker build stage
+
+![docker build](./images/docker-build.png)
+
+Let's verify that our image has been built by going into out workspace
+
+
+
