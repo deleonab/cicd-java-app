@@ -696,3 +696,5 @@ stage('Docker Image Scan: trivy '){
             }
         }
 ```
+
+Let's run the Pipeline build
