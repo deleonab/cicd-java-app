@@ -683,4 +683,16 @@ trivy --version
 ```
 ![trivy version](./images/trivy-version.png)
 
+Add the docker scan stage to the Jenkinsfile
 
+```
+stage('Docker Image Scan: trivy '){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   dockerImageScan("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
+               }
+            }
+        }
+```
