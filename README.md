@@ -469,3 +469,19 @@ Description: sonar api
 ![sonar credentials](./images/sonar-credentials2.png)
 
 
+Now we shall add the static code analysis stages to our jenkinsfile
+
+```
+stage('Static code analysis: Sonarqube'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar-api'
+                   statiCodeAnalysis(SonarQubecredentialsId)
+               }
+            }
+        }
+```
+
+
