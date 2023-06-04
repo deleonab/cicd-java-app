@@ -505,3 +505,27 @@ Build Now
 
 ![static code analysis](./images/static-code-analysis-successful.png)
 
+Next is our Quality Gate status check
+
+```
+
+def call(credentialsId){
+
+waitForQualityGate abortPipeline: false, credentialsId: credentialsId
+
+}
+```
+
+```
+stage('Quality Gate Status Check : Sonarqube'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar-api'
+                   QualityGateStatus(SonarQubecredentialsId)
+               }
+            }
+        }
+       
+       ```
