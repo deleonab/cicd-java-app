@@ -649,5 +649,10 @@ Let's run the pipeline build with the docker build stage
 
 Let's verify that our image has been built by going into out workspace
 
+```
+docker images
+```
+![docker images](./images/docker-images.png)
 
+Images were successfully built
 
