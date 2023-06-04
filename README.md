@@ -656,3 +656,31 @@ docker images
 
 Images were successfully built
 
+Before we push our image to Docker Hub, we need to scan it for bugs and vulnerabilities.
+We shall be using Trivy for this purpose.
+
+We need to install trivy on our Jenkins server
+
+```
+sudo vi trivy.sh
+```
+paste the code below into the file and save
+```
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+```
+Install Trivy
+```
+sh trivy.sh
+```
+Check installation by running trivy --version
+
+```
+trivy --version
+```
+![trivy version](./images/trivy-version.png)
+
+
