@@ -13,5 +13,16 @@ stages{
             )
             }
         }
+
+        stage('Unit Test maven'){
+         
+         
+            steps{
+               script{
+                   
+                   mvnTest()
+               }
+            }
+        }
 }
 }

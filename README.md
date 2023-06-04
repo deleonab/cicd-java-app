@@ -101,6 +101,7 @@ Create our first jenkins job as a pipeline, pipeline script from SCM, script pat
 We shall be using 2 git repositories
 
 1. Host our java app, jenkinsfile,dockerfile and deployment manifest files
+https://github.com/deleonab/cicd-java-app.git
 
 2. Host our jenkins shared library
 
@@ -114,6 +115,7 @@ The vars directory will contain all the groovy scripts which will be called into
 Repo: jenkins-shared-library-for-pipeline
 folder: vars
 file: gitCheckout.groovy
+
 ```
 def call(Map stageParams) {
  
@@ -171,3 +173,60 @@ Project Repository: https://github.com/deleonab/jenkins-shared-library-for-pipel
  All other stages will be using the same method of using theimportes jenkins library and supplying the values.
 
 The next stage is to carry out our Unit Test
+
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: mvnTest.groovy
+```
+def call(){
+    sh 'mvn test'
+}
+```
+Repo: cicd-java-app
+file: Jenkinsfile
+
+```
+stage('Unit Test maven'){
+         
+         
+            steps{
+               script{
+                   
+                   mvnTest()
+               }
+            }
+        }
+        
+```
+
+Jekinsfile now has two stages (Build and Unit Test)
+
+```
+@Library('my-shared-library') _
+pipeline{
+
+    agent any
+stages{
+       stage('Git Checkout'){
+                    
+            steps{
+            gitCheckout(
+                branch: "main",
+                url: "https://github.com/deleonab/cicd-java-app.git"
+            )
+            }
+        }
+
+        stage('Unit Test maven'){
+         
+         
+            steps{
+               script{
+                   
+                   mvnTest()
+               }
+            }
+        }
+}
+}
+```
