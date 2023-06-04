@@ -546,4 +546,33 @@ Administration > Configuration > webhooks
 
 ![sonar webhook](./images/sonar-webhook.png)
 
+Let's run our Jenkins build again
+![qg success](./images/qg-success.png)
+
+
 ![quality gate passed](./images/qualitygate-passed.png)
+
+We have completed our tests and can now build our application.
+
+
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: mvnBuild.groovy
+```
+def call(){
+    sh 'mvn clean install'
+}
+```
+Repo: cicd-java-app
+file: Jenkinsfile
+```
+stage('Maven Build : maven'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   mvnBuild()
+               }
+            }
+        }
+```
