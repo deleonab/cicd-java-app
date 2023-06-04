@@ -280,3 +280,22 @@ Result: Success
 
 ![Unit Test Successful](./images/unit-test-successful.png)
 
+The next stage is to do the Maven Integration Testing
+
+```
+def call(){
+    sh 'mvn test'
+}
+```
+
+
+```
+stage('Integration Test maven'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   mvnIntegrationTest()
+               }
+            }
+        }
