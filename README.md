@@ -230,3 +230,36 @@ stages{
 }
 }
 ```
+
+We shall run the build now. It should fail as Maven hasn't been configured for our pipeline yet
+
+```
+Build now
+```
+
+![maven test fail](./images/maven-test-fail.png)
+
+It has failed as expected.
+
+We shall now install maven on our jenkins server
+
+```
+sudo apt update -y
+
+sudo apt install maven -y
+mvn -version
+
+```
+```
+ systemctl restart user@1000.service
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Apache Maven 3.6.3
+Maven home: /usr/share/maven
+Java version: 17.0.7, vendor: Private Build, runtime: /usr/lib/jvm/java-17-openjdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "5.19.0-1025-aws", arch: "amd64", family: "unix"
+```
+
