@@ -471,6 +471,20 @@ Description: sonar api
 
 Now we shall add the static code analysis stages to our jenkinsfile
 
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: staticCodeAnalysis.groovy
+```
+def call(credentialsId){
+
+    withSonarQubeEnv(credentialsId: credentialsId) {
+         sh 'mvn clean package sonar:sonar'
+    }
+}
+
+```
+Repo: cicd-java-app
+file: Jenkinsfile
 ```
 stage('Static code analysis: Sonarqube'){
          when { expression {  params.action == 'create' } }
