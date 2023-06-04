@@ -263,3 +263,20 @@ Default locale: en, platform encoding: UTF-8
 OS name: "linux", version: "5.19.0-1025-aws", arch: "amd64", family: "unix"
 ```
 
+Let's build the Unit Test Stage > Build Now
+
+Result: Failure: Failed to execute goal
+
+excerpt from Console Output
+```
+Fatal error compiling[m: java.lang.ExceptionInInitializerError: Unable to make field private com.sun.tools.javac.processing.JavacProcessingEnvironment$DiscoveredProcessors
+```
+
+Solution: I updated the lombok version from 1.18.8 to 1.18.28 in pom.xml of our Java application
+
+Let's build the Unit Test Stage > Build Now
+
+Result: Success
+
+![Unit Test Successful](./images/unit-test-successful.png)
+
