@@ -354,3 +354,76 @@ Let's build stages 1- 3 (checkout,unit test, integration test)
 
 ![integration test](./images/integration-successful.png)
 
+Build successful
+
+
+Let's add conditions to out pipeline so that stages would only run when some conditions are true
+
+Wwe shall define the parameters in our Jenkinsfile
+
+```
+parameters{
+
+   choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/destroy')
+
+}
+```
+.. and use in a when expression for the stages
+```
+when {expression { param.action == 'create'}}
+```
+Our Jenkinsfile now looks like this
+
+```
+@Library('my-shared-library') _
+pipeline{
+
+    agent any
+
+ parameters{
+
+        choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
+       
+    }
+
+stages{
+       stage('Git Checkout'){
+                  when { expression {  params.action == 'create' } }  
+            steps{
+            gitCheckout(
+                branch: "main",
+                url: "https://github.com/deleonab/cicd-java-app.git"
+            )
+            }
+        }
+
+        stage('Unit Test maven'){
+         when { expression {  params.action == 'create' } }
+         
+            steps{
+               script{
+                   
+                   mvnTest()
+               }
+            }
+        }
+
+        
+        stage('Integration Test maven'){
+          when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   mvnIntegrationTest()
+               }
+            }
+        }
+
+}
+}
+
+```
+
+
+The next stage is to do static code analysis using Sonarqube
+
