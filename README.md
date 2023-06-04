@@ -499,3 +499,9 @@ stage('Static code analysis: Sonarqube'){
 ```
 
 
+```
+Build Now
+```
+
+![static code analysis](./images/static-code-analysis-successful.png)
+
