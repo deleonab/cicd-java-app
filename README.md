@@ -159,3 +159,7 @@ Project Repository: https://github.com/deleonab/jenkins-shared-library-for-pipel
 
 ![global configuration](./images/global-pipeline.png)
 
+### Let's build our pipeline that contains just the git checkout stage > Build Now
+
+![build git checkout](./images/checlout-successful.png)
+
