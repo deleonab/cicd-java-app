@@ -576,3 +576,8 @@ stage('Maven Build : maven'){
             }
         }
 ```
+
+Now we will run the build 
+
+![mvn build](./images/build-successful.png)
+
