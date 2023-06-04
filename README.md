@@ -426,4 +426,46 @@ stages{
 
 
 The next stage is to do static code analysis using Sonarqube
+It will check the code coverage
+
+We need to configure Jenkins to use Sonarqube
+Let us install the Sonarqube plugins required
+
+Manage Jenkins > Plugins > Available plugins
+
+![sonar plugins](./images/sonar-plugins.png)
+
+![sonar plugins](./images/sonar-plugins2.png)
+
+
+manage jenkins > system cofiguraition > system
+
+- check environment variable checkbox
+- name : sonar-api (anything you want)
+-server url: http://54.234.79.144:9000    (sonaqube url)
+
+Save configuration and return to enter authentication token
+
+![sonar configure](./images/sonar-configure.png)
+
+Let us create the sonarqube token
+
+Log into Sonarqube
+administration > Security 
+Name: jenkins
+Type: User
+Expires In: 30 Days
+
+![sonar token](./images/sonar-token.png)
+
+Manage Jenkins > Credentials > system
+
+Enter the sonarqube token in the secret field
+Kind: Secret text
+ID: sonar-api
+Description: sonar api
+
+![sonar credentials](./images/sonar-credentials.png)
+![sonar credentials](./images/sonar-credentials2.png)
+
 
