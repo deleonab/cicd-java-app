@@ -65,7 +65,7 @@ sudo apt install docker-ce -y
 #sudo systemctl status docker
 ### This added to ensure our container runs
 sudo chmod 777 /var/run/docker.sock
-### docker container start [container id]  as it will need to be started if userdata script fails
+
 ```
 
 Launch Sonarqube container
@@ -73,7 +73,7 @@ Launch Sonarqube container
 docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
 ```
 
-### Wait for our instance to be up and running.
+Wait for our instance to be up and running.
 
 Go to Jenkins using the Instance public IP on port 8080
 
@@ -81,7 +81,7 @@ Get the InitialAdminPassword and log into the Jenkins web interface
 
 ![Jenkins Installed](./images/jenkins-installed.png)
 
-### Check if docker was successfully installed by running
+ Check if docker was successfully installed by running
 ```
  docker container ls
 ```
@@ -92,15 +92,18 @@ Get the InitialAdminPassword and log into the Jenkins web interface
 ![check docker installation](./images/sonar-installed2.png)
 
 
-### Create our first jenkins job as a pipeline, pipeline script from SCM, script path as Jenkinsfile
+Create our first jenkins job as a pipeline, pipeline script from SCM, script path as Jenkinsfile
 
 ![project options](./images/jenkins-project-options.png)
 
 
-### We shall be using 2 git repositories
+
+We shall be using 2 git repositories
+
 1. Host our java app, jenkinsfile,dockerfile and deployment manifest files
 
 2. Host our jenkins shared library
+
 https://github.com/deleonab/jenkins-shared-library-for-pipeline.git
 
 We shall import the jenkins shared library into our jenkinsfile and pass parameters into our script. This way, different teams could use the same library.
@@ -108,9 +111,9 @@ We shall import the jenkins shared library into our jenkinsfile and pass paramet
 jenkins-shared-library-for-pipeline/vars/
 The vars directory will contain all the groovy scripts which will be called into our Jenkinsfile
 
-### Repo: jenkins-shared-library-for-pipeline
-### folder: vars
-### file: gitCheckout.groovy
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: gitCheckout.groovy
 ```
 def call(Map stageParams) {
  
@@ -122,11 +125,11 @@ def call(Map stageParams) {
   }
 ```
 
-### Repo: cicd-java-app
-### file: Jenkinsfile
+Repo: cicd-java-app
+file: Jenkinsfile
 
+import the library into our Jenkinsfile @Library('my-shared-library') _
 ```
-### import the library
 @Library('my-shared-library') _
 
 pipeline{
@@ -159,7 +162,12 @@ Project Repository: https://github.com/deleonab/jenkins-shared-library-for-pipel
 
 ![global configuration](./images/global-pipeline.png)
 
-### Let's build our pipeline that contains just the git checkout stage > Build Now
+ Let's build our pipeline that contains just the git checkout stage > Build Now
 
 ![build git checkout](./images/checlout-successful.png)
 
+ Build was successful
+
+ All other stages will be using the same method of using theimportes jenkins library and supplying the values.
+
+The next stage is to carry out our Unit Test
