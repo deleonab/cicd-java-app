@@ -528,7 +528,7 @@ stage('Quality Gate Status Check : Sonarqube'){
             }
         }
        
-       ```
+       
 
 ```
 Build Now
