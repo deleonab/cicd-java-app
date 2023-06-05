@@ -9,7 +9,15 @@ pipeline{
         string(name: 'ImageName', description: "name of the docker build", defaultValue: 'javaapp')
         string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')
         string(name: 'DockerHubUser', description: "Dockerhub Username", defaultValue: 'deleonabowu')
+        string(name: 'Region', description: "AWS Region", defaultValue: 'us-east-1')
     }
+
+    environment{
+
+ACCESS_KEY = credentials('AWS-ACCESS-KEY')
+SECRET_KEY = credentials('AWS-SECRET-KEY')
+
+}
 stages{
        stage('Git Checkout'){
                     when { expression {  params.action == 'create' } }
@@ -112,6 +120,24 @@ stages{
                    
                    dockerImageCleanup("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
                }
+            }
+        }
+
+        stage('Create EKS Cluster : Terraform'){
+
+            when { expression {  params.action == 'create' } }
+            steps{
+                script{
+
+                    dir('eks_module') {
+                      sh """
+                          
+                          terraform init 
+                          terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region}' --var-file=./config/terraform.tfvars
+                          terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region}' --var-file=./config/terraform.tfvars --auto-approve
+                      """
+                  }
+                }
             }
         }      
 

@@ -827,3 +827,66 @@ eks_module
     version.tf
     variables.tf
   ```
+
+
+Let's add the terraform code to create the EKS Cluster to the pipeline
+In Jenkins, we need to create the environment variables for the secret_key ($SECRET_KEY) and access_key ($ACCESS_KEY)
+After creation, it can be used in our jenkins file in an environment block.
+
+Manage Jenkins > Credentials > Add credentials
+
+Kind: secret text
+Scope: Global (Jenkins, nodes, items etc)
+Secret: Enter access key here
+ID: ACCESS_KEY
+Description: ACCESS_KEY
+
+Kind: secret text
+Scope: Global (Jenkins, nodes, items etc)
+Secret: Enter secret key here
+ID: SECRET_KEY
+Description: ACCESS_KEY
+
+![access key](./images/AWS-ACCESS-KEY.png)
+
+![secret key](./images/AWS-SECRET-KEY.png)
+
+
+
+We shall put the code below in our jenkinsfile
+
+```
+environment{
+
+ACCESS_KEY = credentials('AWS-ACCESS-KEY')
+SECRET_KEY = credentials('AWS-SECRET-KEY')
+
+}
+```
+Add to parama in Jenkinsfile
+```
+string(name: 'Region', description: "AWS Region", defaultValue: 'us-east-1')
+```
+
+```
+stage('Create EKS Cluster : Terraform'){
+            
+            when { expression {  params.action == 'create' } }
+            steps{
+                script{
+
+                    dir('eks_module') {
+                      sh """
+                          
+                          terraform init 
+                          terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region}' --var-file=./config/terraform.tfvars
+                          terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region}' --var-file=./config/terraform.tfvars --auto-approve
+                      """
+                  }
+                }
+            }
+        }      
+  
+  
+```
+
