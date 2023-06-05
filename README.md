@@ -863,7 +863,7 @@ SECRET_KEY = credentials('AWS-SECRET-KEY')
 
 }
 ```
-Add to parama in Jenkinsfile
+Add to parameters in Jenkinsfile
 ```
 string(name: 'Region', description: "AWS Region", defaultValue: 'us-east-1')
 ```
