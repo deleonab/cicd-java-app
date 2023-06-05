@@ -768,10 +768,62 @@ Let's run our build again
 
 
 
+The next stage is for us to do an image clean on our jenkins server as this would get very large over time and may affect performance.
 
 
 
+Repo: jenkins-shared-library-for-pipeline
+folder: vars
+file: dockerImageClean.groovy
+```
+def call(String projectImage, String ImageTag, String hubUser){
+    
+    sh """
+     docker rmi ${hubUser}/${projectImage}:${ImageTag}
+     docker rmi ${hubUser}/${projectImage}:latest
+    """
+}
+```
 
+Repo: cicd-java-app
+file: Jenkinsfile
+```
+stage('Docker Image Cleanup : DockerHub '){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   dockerImageCleanup("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
+               }
+            }
+        }      
 
+```
 
+The next step is to create our EKS Cluster and nodegroup. We shall be using Terraform and Jenkins for this.
 
+We shall be using custom modules for this purpose.
+
+The child modules will be in our modules folde and will be called by the root module main.tf.
+
+Parameters will be passed through our terraform.tfvars file in our config folder.
+
+The folder structure for our terraform files will be as below:
+```
+eks_module
+    config
+        terraform.tfvars
+    modules
+        aws_eks
+           main.tf
+           variables.tf
+           output.tf
+        aws_eks_nodegroups
+           main.tf
+           variables.tf
+           output.tf
+    main.tf
+    provider.tf
+    version.tf
+    variables.tf
+  ```
