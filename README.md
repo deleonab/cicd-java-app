@@ -890,3 +890,4 @@ stage('Create EKS Cluster : Terraform'){
   
 ```
 
+We have successfully creates an EKS cluster with 2 nodes. 
