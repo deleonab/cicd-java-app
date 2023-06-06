@@ -112,6 +112,11 @@ We shall import the jenkins shared library into our jenkinsfile and pass paramet
 jenkins-shared-library-for-pipeline/vars/
 The vars directory will contain all the groovy scripts which will be called into our Jenkinsfile
 
+
+Please note: We also need to install Terraform, awscli and kubectl on our jenkins server for use in later stages of the pipeline.
+
+
+
 Repo: jenkins-shared-library-for-pipeline
 folder: vars
 file: gitCheckout.groovy
@@ -903,3 +908,34 @@ We have successfully created an EKS cluster with 2 nodes.
 
 
 Now that we have created our eks cluster, we need to authenticate and configure it so that we may be able to connect to it and interact/deploy on it.
+
+
+Repo: cicd-java-app
+file: Jenkinsfile
+
+```
+stage('Connect to EKS: aws configure '){
+            when { expression {  params.action == 'create' } }
+        steps{
+
+            script{
+
+                sh """
+                aws configure set aws_access_key_id "$ACCESS_KEY"
+                aws configure set aws_secret_access_key "$SECRET_KEY"
+                aws configure set region "${params.Region}"
+                aws eks --region ${params.Region} update-kubeconfig --name ${params.cluster}
+                """
+            }
+        }
+        }   
+
+```
+We have added the cluster name to the declared parameters
+
+```
+string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'demo-cluster1')
+```
+
+![aws configure](./images/aws-configure.png)
+
