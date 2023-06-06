@@ -10,6 +10,7 @@ pipeline{
         string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')
         string(name: 'DockerHubUser', description: "Dockerhub Username", defaultValue: 'deleonabowu')
         string(name: 'Region', description: "AWS Region", defaultValue: 'us-east-1')
+        string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'demo-cluster1')
     }
 
     environment{
@@ -139,7 +140,23 @@ stages{
                   }
                 }
             }
-        }      
+        }    
+
+         stage('Connect to EKS: aws configure '){
+            when { expression {  params.action == 'create' } }
+        steps{
+
+            script{
+
+                sh """
+                aws configure set aws_access_key_id "$ACCESS_KEY"
+                aws configure set aws_secret_access_key "$SECRET_KEY"
+                aws configure set region "${params.Region}"
+                aws eks --region ${params.Region} update-kubeconfig --name ${params.cluster}
+                """
+            }
+        }
+        }   
 
 }
 }

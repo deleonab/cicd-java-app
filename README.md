@@ -901,3 +901,5 @@ We have successfully created an EKS cluster with 2 nodes.
 
 ![cluster built](./images/eks-cluster-created3.png)
 
+
+Now that we have created our eks cluster, we need to authenticate and configure it so that we may be able to connect to it and interact/deploy on it.
