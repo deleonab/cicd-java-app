@@ -895,6 +895,8 @@ Let us try building our pipeline again
 
 We have successfully created an EKS cluster with 2 nodes. 
 
+![cluster built](./images/eks-cluster-created.png)
+
 ![cluster built](./images/eks-cluster-created2.png)
 
 ![cluster built](./images/eks-cluster-created3.png)
