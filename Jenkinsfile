@@ -10,7 +10,7 @@ pipeline{
         string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')
         string(name: 'DockerHubUser', description: "Dockerhub Username", defaultValue: 'deleonabowu')
         string(name: 'Region', description: "AWS Region", defaultValue: 'us-east-1')
-        string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'demo-cluster1')
+        string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'acme-cluster')
     }
 
     environment{

@@ -939,3 +939,37 @@ string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'd
 
 ![aws configure](./images/aws-configure.png)
 
+
+
+The final stage is to deploy the cluster
+
+We have set it so that the pipeline pauses just before deployment and prompts us to confirm the deployment.
+
+This made possible by the use of a try/catch block which waits for a confirmation before the stage is completed.
+
+```
+ stage('Deployment on EKS Cluster'){
+            when { expression {  params.action == 'create' } }
+            steps{
+                script{
+                  
+                  def apply = false
+
+                  try{
+                    input message: 'please confirm to deploy on eks', ok: 'Ready to apply the config ?'
+                    apply = true
+                  }catch(err){
+                    apply= false
+                    currentBuild.result  = 'UNSTABLE'
+                  }
+                  if(apply){
+
+                    sh """
+                      kubectl apply -f .
+                    """
+                  }
+                }
+            }
+        }    
+
+```
