@@ -1,3 +1,6 @@
+
+[header image](./images/cicd.jpg)
+
 We shall be building a CI/CD Pipeline to deploy our java application in a Kubernetes cluster. We shall be using Jenkins shared library instead of a simple Jenkinsfile. 
 
  - We shall host our Jenkins shared Library as well as our application code in Github
