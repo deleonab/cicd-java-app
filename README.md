@@ -6,7 +6,7 @@ We shall be building a CI/CD Pipeline to deploy our java application in a Kubern
  - We shall host our Jenkins shared Library as well as our application code in Github
  - Jenkins will checkout the code from Github
  - Maven will do Unit Testing, Integration Testing and code build.
- - We shal do staticc code analysis using Sonarqube.
+ - We shal do static code analysis using Sonarqube.
  - Next we will do a Quality Gate status check.
  - If it passes, It will proceed with the build otherwise it will be marked as failed.
  -  The Maven build will produce a *.jar artifact.
