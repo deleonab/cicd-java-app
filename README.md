@@ -5,14 +5,17 @@ We shall be building a CI/CD Pipeline to deploy our java application in a Kubern
 
  - We shall host our Jenkins shared Library as well as our application code in Github
  - Jenkins will checkout the code from Github
- - Jenkins will do Unit Testing, Integration Testing and Static Code Analysis using Sonarqube
- - Next it will do a Quality Gate status checks
+ - Maven will do Unit Testing, Integration Testing and Build.
+ = We shal do staticc code analysis using Sonarqube.
+ - Next we will do a Quality Gate status check.
  - If it passes, It will proceed with the build otherwise it will be marked as failed.
- -  The Maven build will produce a*.jar artifact.
+ -  The Maven build will produce a *.jar artifact.
  -  We shall use a Dockerfile to build our docker image
- -  Next, we shall scan our image for vulnerabilities using Trivy. If pushing to ECS, we can enable image scanning i.e push on scan feature. 
+ -  Next, we shall scan our image for vulnerabilities using Trivy before pushing to Docker hub.
+ -  If pushing to ECS, we can enable image scanning i.e push on scan feature. 
  -  We shall push our image to dockerhub or ECS.
- -  The image pushed to the repo will be used in our deployment manifests to deploy into our Kubernetes cluster.
+ -  As we are using EKS, we shall use Terraform to provision our EKS Cluster
+ -  The image pushed to the repo will be used in our deployment manifests to deploy our application into our Kubernetes cluster.
 
 
 CREATE JENKINS SERVER
@@ -26,9 +29,15 @@ CREATE JENKINS SERVER
  
 Userdata
 Install Jenkins, Docker and Sonarqube
-The docker is needed to run sonarqube as a container
+Docker is needed to run sonarqube as a container
+```
 i.e docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
 ```
+```
+ In our jenkins setup, we also need to install
+ - AWS CLI
+ - Terraform
+ - Kubectl
 
 #!/bin/bash
 
