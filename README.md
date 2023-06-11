@@ -18,7 +18,7 @@ We shall be building a CI/CD Pipeline to deploy our java application in a Kubern
  -  The image pushed to the repo will be used in our deployment manifests to deploy our application into our Kubernetes cluster.
 
 
-CREATE JENKINS SERVER
+CREATE JENKINS SERVER -
 - create VPC with 2 private and 2 public subnets (cicd-project-vpc)  vpc-094dc7f7668457ea8
 -	Use Ubuntu image 22.04
 -	Choose T2 Medium
